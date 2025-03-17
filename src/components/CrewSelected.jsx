@@ -29,17 +29,17 @@ const CrewSelected = (id) => {
               {crew.name.toLowerCase() == id.id.replace("_", " ") ? (
                 <li className="w-3 h-3 bg-white rounded-full"></li>
               ) : (
-                <li className="w-3 h-3 bg-white/40 rounded-full"></li>
+                <li className="w-3 h-3 bg-white/40 rounded-full hover:bg-white/70"></li>
               )}
             </Link>
           ))}
         </ul>
       </div>
       <div
-        className="relative w-full h-90 bg-contain bg-no-repeat bg-center"
+        className="relative w-full h-[60vh] bg-contain bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${dataCrew.images.png})` }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-black/70 from-0% to-transparent to-10%"></div>
+        {/* <div className="absolute inset-0 bg-linear-to-t to-transparent"></div> */}
       </div>
     </div>
   );

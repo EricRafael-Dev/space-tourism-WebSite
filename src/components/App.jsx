@@ -23,7 +23,7 @@ const App = () => {
 
         <div className=" h-[40%] flex justify-center items-center">
           <Link to="/destination/moon">
-            <div className="bg-white flex justify-center w-[144px] h-[144px] items-center rounded-full cursor-pointer hover:outline-[88px] hover:outline-[#FFFFFF]/[10%]">
+            <div className="bg-white flex justify-center w-[144px] h-[144px] items-center rounded-full outline-transparent cursor-pointer hover:outline-[88px] hover:outline-[#FFFFFF]/10 transition-all duration-200">
               Explore
             </div>
           </Link>

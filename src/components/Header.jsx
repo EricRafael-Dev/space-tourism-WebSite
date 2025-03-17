@@ -19,13 +19,13 @@ const Header = () => {
       </button>
 
       <div
-        className={`fixed top-0 right-0 backdrop-blur-xl h-full p-8 flex items-center flex-col  ${
-          menuAppear ? "" : "hidden"
+        className={`fixed top-0 right-0 backdrop-blur-xl h-full p-8 flex items-center flex-col transition-all duration-300  ${
+          menuAppear ? "right-0" : "right-[-100%]"
         }`}
       >
         <button
           onClick={() => setMenuAppear(false)}
-          className="p-8 cursor-pointer absolute top-0 right-0"
+          className="p-8 cursor-pointer absolute top-4 right-0"
         >
           <img src={close} alt="" />
         </button>

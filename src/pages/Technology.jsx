@@ -29,7 +29,8 @@ const Technology = () => {
         </div>
         <ul className="flex gap-7">
           {dataDic.map((technology, index) => (
-            <Link key={technology.name}
+            <Link
+              key={technology.name}
               to={`/technology/${technology.name
                 .replace(" ", "_")
                 .toLowerCase()}`}
@@ -39,7 +40,7 @@ const Technology = () => {
                   {index + 1}
                 </li>
               ) : (
-                <li className="text-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center">
+                <li className="text-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center hover:bg-white/50 hover:text-[#0B0D17]/80">
                   {index + 1}
                 </li>
               )}
