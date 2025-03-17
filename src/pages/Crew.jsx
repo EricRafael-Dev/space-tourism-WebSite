@@ -1,12 +1,10 @@
 import React from 'react'
-import data from "../assets/data.json";
 import bgCrew from "/crew/background-crew-mobile.jpg"
 import { useParams } from "react-router-dom";
 import CrewSelected from '../components/CrewSelected.jsx';
 
 const Crew = () => {
    const { id } = useParams();
-
   return (
     <div className="relative w-screen h-screen">
       <img className="fixed h-full w-full" src={bgCrew} alt="" />

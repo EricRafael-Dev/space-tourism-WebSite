@@ -1,5 +1,6 @@
 import React from "react";
 import bg_mb from "/home/background-home-mobile.jpg";
+import { Link } from "react-router-dom";
 
 const App = () => {
   return (
@@ -7,7 +8,6 @@ const App = () => {
       <img className="absolute h-full w-full" src={bg_mb} alt="" />
 
       <div className="flex flex-col justify-between h-[80%] absolute top-[10vh] m-5 ">
-
         <div className="text-white text-center flex flex-col justify-between h-[50%]">
           <h2 className="text-[19px] font-Barlow font-normal tracking-[2px] uppercase">
             So, you want to travel to
@@ -22,9 +22,12 @@ const App = () => {
         </div>
 
         <div className=" h-[40%] flex justify-center items-center">
-          <div className="bg-white flex justify-center w-[144px] h-[144px] items-center rounded-full cursor-pointer hover:outline-[88px] hover:outline-[#FFFFFF]/[10%]">Explore</div>
+          <Link to="/destination/moon">
+            <div className="bg-white flex justify-center w-[144px] h-[144px] items-center rounded-full cursor-pointer hover:outline-[88px] hover:outline-[#FFFFFF]/[10%]">
+              Explore
+            </div>
+          </Link>
         </div>
-
       </div>
     </div>
   );

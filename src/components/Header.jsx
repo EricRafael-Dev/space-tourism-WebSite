@@ -8,7 +8,7 @@ const Header = () => {
   const [menuAppear, setMenuAppear] = useState(false);
 
   return (
-    <div className="flex items-center justify-between p-[24px] w-full h-[10vh] fixed z-60 top-0 ">
+    <div className="flex items-center justify-between p-[24px] w-full h-[10vh] fixed z-60 top-0 bg-[#0B0D17]/70">
       <button>
         <Link to="/">
           <img src={logo} alt="" />

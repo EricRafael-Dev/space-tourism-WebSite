@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const CrewSelected = (id) => {
   const dataDic = data["crew"];
   const [img, setimg] = useState();
-    console.log(img)
   const dataCrew = dataDic.find((dest) =>
     dest.name.toLowerCase() === id.id.replace("_", " ")
   );
@@ -18,7 +17,7 @@ const CrewSelected = (id) => {
           <h2 className="opacity-50 uppercase">{dataCrew.role}</h2>
           <h1 className="text-[28px] uppercase">{dataCrew.name}</h1>
         </div>
-        <p className="text-[16px] font-Barlow">{dataCrew.bio}</p>
+        <p className="text-[16px] font-Barlow text-[#D0D6F9]">{dataCrew.bio}</p>
       </div>
       <div>
         <ul className=" flex gap-5">
@@ -40,7 +39,7 @@ const CrewSelected = (id) => {
         className="relative w-full h-90 bg-contain bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${dataCrew.images.png})` }}
       >
-        <div class="absolute inset-0 bg-linear-to-t from-black/70 from-0% to-transparent to-10%"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 from-0% to-transparent to-10%"></div>
       </div>
     </div>
   );
