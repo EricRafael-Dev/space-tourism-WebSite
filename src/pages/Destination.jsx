@@ -1,9 +1,9 @@
 import React from "react";
-import bgDestination from "../assets/destination/background-destination-mobile.jpg";
-import moon from "../assets/destination/image-moon.png";
-import mars from "../assets/destination/image-mars.png";
-import titan from "../assets/destination/image-titan.png";
-import europa from "../assets/destination/image-europa.png";
+import bgDestination from "/destination/background-destination-mobile.jpg";
+import moon from "/destination/image-moon.png";
+import mars from "/destination/image-mars.png";
+import titan from "/destination/image-titan.png";
+import europa from "/destination/image-europa.png";
 import data from "../assets/data.json";
 import { Link, useParams } from "react-router-dom";
 
