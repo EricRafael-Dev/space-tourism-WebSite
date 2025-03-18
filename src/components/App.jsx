@@ -1,8 +1,19 @@
 import React from "react";
 import bg_mb from "/home/background-home-mobile.jpg";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+gsap.registerPlugin(useGSAP);
 
 const App = () => {
+  useGSAP(() => {
+
+    gsap.fromTo("h2", { opacity: 0 }, { opacity: 1, duration: 2, delay:0.3 });
+    gsap.fromTo("h1", { opacity: 0 }, { opacity: 1, duration: 2, delay:0.5 });
+    gsap.fromTo("p", { opacity: 0 }, { opacity: 1, duration: 2, delay:0.8 });
+    gsap.fromTo("#explore", { opacity: 0 }, { opacity: 1, duration: 2, delay:0.8 });
+  }, []);
+
   return (
     <div className="relative w-screen h-screen">
       <img className="absolute h-full w-full" src={bg_mb} alt="" />
@@ -21,7 +32,7 @@ const App = () => {
           </p>
         </div>
 
-        <div className=" h-[40%] flex justify-center items-center">
+        <div id="explore" className=" h-[40%] flex justify-center items-center">
           <Link to="/destination/moon">
             <div className="bg-white flex justify-center w-[144px] h-[144px] items-center rounded-full outline-transparent cursor-pointer hover:outline-[88px] hover:outline-[#FFFFFF]/10 transition-all duration-200">
               Explore
