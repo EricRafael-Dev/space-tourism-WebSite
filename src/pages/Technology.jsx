@@ -14,25 +14,21 @@ const Technology = () => {
   useGSAP(() => {
     let tlCrew = gsap.timeline();
     tlCrew
-      .fromTo("h2", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: .5 })
+      .fromTo("h2", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 })
       .fromTo(
         "h1",
         { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: .5 },
+        { y: 0, opacity: 1, duration: 0.5 },
         0.2
       )
       .fromTo(
         "#description",
         { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: .5 },
-        .3
+        { y: 0, opacity: 1, duration: 0.5 },
+        0.3
       )
-      .fromTo(
-        "#img_technology",
-        { opacity: 0 },
-        { opacity: 1, duration: 1 },
-        0
-      );
+      .fromTo("#img_technology", { opacity: 0 }, { opacity: 1, duration: 1 }, 0)
+      .fromTo(`#${id}`, { y: 0 }, { y: -10, duration: 0.5 },0);
   }, [id]);
 
   const animateIn = (technology) => {
@@ -40,7 +36,7 @@ const Technology = () => {
     selectedtl.fromTo(
       `#${technology}`,
       { y: 0, },
-      { y: -20, duration: .5 }
+      { y: -10, duration: .5 }
     );
   };
 
@@ -50,7 +46,7 @@ const Technology = () => {
 
     selectedtlOut.fromTo(
       `#${lastTechnology}`,
-      { y: -20 },
+      { y: -10 },
       { y: 0, duration: .5 }
     );
 
@@ -101,7 +97,7 @@ const Technology = () => {
             alt=""
           />
         </div>
-        <ul className="flex gap-7">
+        <ul className="flex gap-7 [&_button]:cursor-pointer">
           {dataDic.map((technology, index) => (
             <button
               key={technology.name}
@@ -113,18 +109,26 @@ const Technology = () => {
                   technology.name.toLowerCase().replace(" ", "_")
                 );
                 setTimeout(() => {
-                  navigate(`/technology/${technology.name.toLowerCase().replace(" ", "_")}`);
+                  navigate(
+                    `/technology/${technology.name
+                      .toLowerCase()
+                      .replace(" ", "_")}`
+                  );
                   animateIn(technology.name.toLowerCase().replace(" ", "_"));
                 }, 700);
                 setTimeout(() => {
                   setDisable(false);
                 }, 1100);
               }}
-              disabled={id == technology.name.toLowerCase() ? true : disable}
+              disabled={
+                id == technology.name.toLowerCase().replace(" ", "_")
+                  ? true
+                  : disable
+              }
               className={
                 technology.name.toLowerCase() == id.replace("_", " ")
-                  ? "text-[#0B0D17] bg-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center"
-                  : "text-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center hover:bg-white/50 hover:text-[#0B0D17]/80"
+                  ? "text-[#0B0D17] bg-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center transition-colors duration-200"
+                  : "text-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center hover:bg-white/50 hover:text-[#0B0D17]/80 transition-colors duration-200"
               }
             >
               {index + 1}

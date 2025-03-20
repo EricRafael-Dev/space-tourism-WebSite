@@ -48,16 +48,6 @@ const Destination = () => {
         { opacity: 1, y: 0, duration: 0.5 },
         1.5
       )
-      .fromTo(
-        `#${lastPlanet}`,
-        {
-          borderBottomWidth: 0,
-          borderBottomRightRadius: 6,
-          borderBottomLeftRadius: 6,
-        },
-        { borderBottomWidth: 3, duration: 1.3 },
-        0.2
-      );
   }, []);
 
   const animateIn = () => {
@@ -115,34 +105,10 @@ const Destination = () => {
       );
   };
 
-  const swapIn = (planet) => {
-    let tlSwapIn = gsap.timeline();
-
-    tlSwapIn.fromTo(
-      `#${planet}`,
-      {
-        borderBottomWidth: 0,
-        borderBottomRightRadius: 6,
-        borderBottomLeftRadius: 6,
-      },
-      { borderBottomWidth: 3, duration: 1.3 }
-    );
-    setLastPlanet(planet);
-  };
-  const swapOut = () => {
-    let tlSwapOut = gsap.timeline();
-
-    tlSwapOut.fromTo(
-      `#${lastPlanet}`,
-      { borderBottomWidth: 3 },
-      { borderBottomWidth: 0, duration: 1.3 }
-    );
-  };
   const dataDic = data["destinations"];
   const dataDestination = dataDic.find(
     (dest) => dest.name.toLowerCase() === id
   );
-  const [lastPlanet, setLastPlanet] = useState(dataDestination.name);
 
   return (
     <div className="relative w-screen h-screen">
@@ -160,18 +126,16 @@ const Destination = () => {
             src={dataDestination.images.png}
             alt=""
           />
-          <ul className="w-full text-[#D0D6F9] flex text-[17px] font-Barlow justify-around [&_li]:uppercase [&_li]:h-[30px]">
+          <ul className="w-full text-[#D0D6F9] flex text-[17px] font-Barlow justify-around [&_li]:uppercase [&_li]:h-[30px] [&_button]:cursor-pointer">
             {dataDic.map((planet, index) => (
               <button
                 key={planet.name}
                 onClick={() => {
                   setDisable(true);
                   animateOut();
-                  swapOut();
                   setTimeout(() => {
                     navigate(`/destination/${planet.name.toLowerCase()}`);
                     animateIn();
-                    swapIn(planet.name);
                   }, 1300);
 
                   setTimeout(() => {
@@ -184,8 +148,8 @@ const Destination = () => {
                   id={planet.name}
                   className={
                     id == planet.name.toLowerCase()
-                      ? ""
-                      : "hover:border-b-3 hover:rounded-b-md hover:border-white/60 hover:text-white/90"
+                      ? "text-white border-b-3 rounded-b-md transition-all duration-200"
+                      : "hover:border-b-3 hover:rounded-b-md hover:border-white/60 hover:text-white/90 transition-all duration-200"
                   }
                 >
                   {planet.name}

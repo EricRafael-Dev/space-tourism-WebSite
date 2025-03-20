@@ -89,7 +89,7 @@ const CrewSelected = ({ id }) => {
         </p>
       </div>
       <div>
-        <ul className=" flex gap-5">
+        <ul className=" flex gap-5 [&_button]:cursor-pointer">
           {dataDic.map((crew) => (
             <button
               key={crew.name}
@@ -113,8 +113,8 @@ const CrewSelected = ({ id }) => {
               <li
                 className={
                   crew.name.toLowerCase() == id.replace("_", " ")
-                    ? "w-3 h-3 bg-white rounded-full"
-                    : "w-3 h-3 bg-white opacity-[40%] rounded-full hover:bg-white/70"
+                    ? "w-3 h-3 bg-white rounded-full transition-colors duration-200"
+                    : "w-3 h-3 bg-white opacity-[40%] rounded-full hover:bg-white/70 transition-colors duration-200"
                 }
               ></li>
             </button>
