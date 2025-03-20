@@ -10,47 +10,55 @@ gsap.registerPlugin(useGSAP);
 const Destination = () => {
   const { id } = useParams();
   let navigate = useNavigate();
-  const [animation, setAnimation] = useState();
   const [disable, setDisable] = useState(false);
 
-  // useGSAP(() => {
-  //   let tl = gsap.timeline();
-  //   tl.fromTo(
-  //     "#planet_img",
-  //     { opacity: 0 },
-  //     { opacity: 1, duration: 0.5, delay: 0.2 }
-  //   )
-  //     .fromTo(
-  //       "#name",
-  //       { opacity: 0 },
-  //       { opacity: 1, duration: 0.5, delay: 0.2 },
-  //       0
-  //     )
-  //     .fromTo(
-  //       "#description",
-  //       { opacity: 0 },
-  //       { opacity: 1, duration: 0.5 },
-  //       0.7
-  //     )
-  //     .fromTo(
-  //       "#info_p",
-  //       { opacity: 0, y: 30 },
-  //       { opacity: 1, y: 0, duration: 0.5 }
-  //     )
-  //     .fromTo(
-  //       "#distance",
-  //       { opacity: 0, y: 30 },
-  //       { opacity: 1, y: 0, duration: 0.5 },
-  //       1.5
-  //     )
-  //     .fromTo(
-  //       "#time",
-  //       { opacity: 0, y: 30 },
-  //       { opacity: 1, y: 0, duration: 0.5 },
-  //       1.5
-  //     );
-
-  // }, []);
+  useGSAP(() => {
+    let tl = gsap.timeline();
+    tl.fromTo(
+      "#planet_img",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.5, delay: 0.2 }
+    )
+      .fromTo(
+        "#name",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, delay: 0.2 },
+        0
+      )
+      .fromTo(
+        "#description",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5 },
+        0.7
+      )
+      .fromTo(
+        "#info_p",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5 }
+      )
+      .fromTo(
+        "#distance",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        1.5
+      )
+      .fromTo(
+        "#time",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        1.5
+      )
+      .fromTo(
+        `#${lastPlanet}`,
+        {
+          borderBottomWidth: 0,
+          borderBottomRightRadius: 6,
+          borderBottomLeftRadius: 6,
+        },
+        { borderBottomWidth: 3, duration: 1.3 },
+        0.2
+      );
+  }, []);
 
   const animateIn = () => {
     let tlIn = gsap.timeline();
@@ -81,7 +89,12 @@ const Destination = () => {
     tlOut
       .fromTo("#planet_img", { opacity: 1 }, { opacity: 0, duration: 0.5 })
       .fromTo("#name", { opacity: 1 }, { opacity: 0, duration: 0.5 }, 0.3)
-      .fromTo("#description", { opacity: 1 }, { opacity: 0, duration: 0.5 }, 0.5)
+      .fromTo(
+        "#description",
+        { opacity: 1 },
+        { opacity: 0, duration: 0.5 },
+        0.5
+      )
       .fromTo(
         "#info_p",
         { opacity: 1, y: 0 },
@@ -101,10 +114,35 @@ const Destination = () => {
         0.7
       );
   };
+
+  const swapIn = (planet) => {
+    let tlSwapIn = gsap.timeline();
+
+    tlSwapIn.fromTo(
+      `#${planet}`,
+      {
+        borderBottomWidth: 0,
+        borderBottomRightRadius: 6,
+        borderBottomLeftRadius: 6,
+      },
+      { borderBottomWidth: 3, duration: 1.3 }
+    );
+    setLastPlanet(planet);
+  };
+  const swapOut = () => {
+    let tlSwapOut = gsap.timeline();
+
+    tlSwapOut.fromTo(
+      `#${lastPlanet}`,
+      { borderBottomWidth: 3 },
+      { borderBottomWidth: 0, duration: 1.3 }
+    );
+  };
   const dataDic = data["destinations"];
   const dataDestination = dataDic.find(
     (dest) => dest.name.toLowerCase() === id
   );
+  const [lastPlanet, setLastPlanet] = useState(dataDestination.name);
 
   return (
     <div className="relative w-screen h-screen">
@@ -128,10 +166,12 @@ const Destination = () => {
                 key={planet.name}
                 onClick={() => {
                   setDisable(true);
-                  animateOut()
+                  animateOut();
+                  swapOut();
                   setTimeout(() => {
                     navigate(`/destination/${planet.name.toLowerCase()}`);
                     animateIn();
+                    swapIn(planet.name);
                   }, 1300);
 
                   setTimeout(() => {
@@ -141,9 +181,10 @@ const Destination = () => {
                 disabled={id == planet.name.toLowerCase() ? true : disable}
               >
                 <li
+                  id={planet.name}
                   className={
                     id == planet.name.toLowerCase()
-                      ? "border-b-3 rounded-b-md border-white text-white"
+                      ? ""
                       : "hover:border-b-3 hover:rounded-b-md hover:border-white/60 hover:text-white/90"
                   }
                 >

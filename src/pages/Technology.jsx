@@ -1,16 +1,89 @@
 import React, { useState } from "react";
 import bgTechnology from "/technology/background-technology-mobile.jpg";
 import data from "../assets/data.json";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 const Technology = () => {
   const { id } = useParams();
+  let navigate = useNavigate();
+
+  useGSAP(() => {
+    let tlCrew = gsap.timeline();
+    tlCrew
+      .fromTo("h2", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: .5 })
+      .fromTo(
+        "h1",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: .5 },
+        0.2
+      )
+      .fromTo(
+        "#description",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: .5 },
+        .3
+      )
+      .fromTo(
+        "#img_technology",
+        { opacity: 0 },
+        { opacity: 1, duration: 1 },
+        0
+      );
+  }, [id]);
+
+  const animateIn = (technology) => {
+    let selectedtl = gsap.timeline();
+    selectedtl.fromTo(
+      `#${technology}`,
+      { y: 0, },
+      { y: -20, duration: .5 }
+    );
+  };
+
+  const animateOut = () => {
+    let selectedtlOut = gsap.timeline();
+    let tlTechnologyOut = gsap.timeline();
+
+    selectedtlOut.fromTo(
+      `#${lastTechnology}`,
+      { y: -20 },
+      { y: 0, duration: .5 }
+    );
+
+    tlTechnologyOut
+      .fromTo("h2", { y: 0, opacity: 1 }, { y: 50, opacity: 0, duration: .5 })
+      .fromTo(
+        "h1",
+        { y: 0, opacity: 1 },
+        { y: 50, opacity: 0, duration: .5 },
+        0.1
+      )
+      .fromTo(
+        "#description",
+        { y: 0, opacity: 1 },
+        { y: 50, opacity: 0, duration: .5 },
+        0.2
+      )
+      .fromTo(
+        "#img_technology",
+        { opacity: 1 },
+        { opacity: 0, duration: .7 },
+        0
+      );
+  };
 
   const dataDic = data["technology"];
   const dataTechnology = dataDic.find(
     (dest) => dest.name.toLowerCase() === id.replace("_", " ")
   );
 
+  const [disable, setDisable] = useState(false);
+  const [lastTechnology, setLastTechnology] = useState(id);
+  console.log(lastTechnology)
   return (
     <div className="relative w-screen h-screen">
       <img className="fixed h-full w-full" src={bgTechnology} alt="" />
@@ -22,6 +95,7 @@ const Technology = () => {
             <p>Space Launch 101</p>
           </div>
           <img
+            id="img_technology"
             className="w-full h-[30vh] object-cover object-bottom"
             src={dataTechnology.images.portrait}
             alt=""
@@ -29,22 +103,32 @@ const Technology = () => {
         </div>
         <ul className="flex gap-7">
           {dataDic.map((technology, index) => (
-            <Link
+            <button
               key={technology.name}
-              to={`/technology/${technology.name
-                .replace(" ", "_")
-                .toLowerCase()}`}
+              id={technology.name.toLowerCase().replace(" ", "_")}
+              onClick={() => {
+                setDisable(true);
+                animateOut();
+                setLastTechnology(
+                  technology.name.toLowerCase().replace(" ", "_")
+                );
+                setTimeout(() => {
+                  navigate(`/technology/${technology.name.toLowerCase().replace(" ", "_")}`);
+                  animateIn(technology.name.toLowerCase().replace(" ", "_"));
+                }, 700);
+                setTimeout(() => {
+                  setDisable(false);
+                }, 1100);
+              }}
+              disabled={id == technology.name.toLowerCase() ? true : disable}
+              className={
+                technology.name.toLowerCase() == id.replace("_", " ")
+                  ? "text-[#0B0D17] bg-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center"
+                  : "text-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center hover:bg-white/50 hover:text-[#0B0D17]/80"
+              }
             >
-              {technology.name.toLowerCase() == id.replace("_", " ") ? (
-                <li className="text-[#0B0D17] bg-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center">
-                  {index + 1}
-                </li>
-              ) : (
-                <li className="text-white text-xl h-12 w-12 rounded-full border-1 font-Bellefair flex justify-center items-center hover:bg-white/50 hover:text-[#0B0D17]/80">
-                  {index + 1}
-                </li>
-              )}
-            </Link>
+              {index + 1}
+            </button>
           ))}
         </ul>
         <div className="text-white font-Bellefair font-normal text-[21px] flex justify-center flex-col items-center text-center gap-6 leading-8 p-10">
@@ -52,7 +136,10 @@ const Technology = () => {
             <h2 className="opacity-50 uppercase">The Terminology...</h2>
             <h1 className="text-[28px] uppercase">{dataTechnology.name}</h1>
           </div>
-          <p className="text-[16px] font-Barlow text-[#D0D6F9]">
+          <p
+            id="description"
+            className="text-[16px] font-Barlow text-[#D0D6F9]"
+          >
             {dataTechnology.description}
           </p>
         </div>

@@ -1,15 +1,82 @@
 import React, { useEffect, useState } from "react";
 import data from "../assets/data.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 
-const CrewSelected = (id) => {
+gsap.registerPlugin(useGSAP);
+
+const CrewSelected = ({ id }) => {
+  const navigate = useNavigate();
+  const [lastCrew, setLastCrew] = useState(id);
+  const [disable, setDisable] = useState();
   const dataDic = data["crew"];
   const [img, setimg] = useState();
-  const dataCrew = dataDic.find((dest) =>
-    dest.name.toLowerCase() === id.id.replace("_", " ")
+  const dataCrew = dataDic.find(
+    (dest) => dest.name.toLowerCase() === id.replace("_", " ")
   );
 
-  useEffect(()=> setimg(dataCrew.images.png), [dataCrew])
+  useGSAP(() => {
+    let tlCrew = gsap.timeline();
+    tlCrew
+      .fromTo("h2", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1 })
+      .fromTo(
+        "h1",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        0.5
+      )
+      .fromTo(
+        "#description",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        1
+      )
+      .fromTo("#img_crew", { opacity: 0 }, { opacity: 1, duration: 2 }, 0)
+      .fromTo(
+      `#${lastCrew}`,
+      { scale: 1, opacity: "40%" },
+      { scale: 1.3, opacity: "100%", duration: 0.5 }, 0)
+
+  }, [id]);
+
+  const animateIn = (technology) => {
+    let selectedtl = gsap.timeline();
+    selectedtl.fromTo(
+      `#${technology}`,
+      { scale: 1, opacity: "40%" },
+      { scale: 1.3, opacity: "100%", duration: 0.5 }
+    );
+  };
+
+  const animateOut = () => {
+    let selectedtlOut = gsap.timeline();
+    let tlCrewOut = gsap.timeline();
+
+    selectedtlOut.fromTo(
+      `#${lastCrew}`,
+      { scale: 1.3, opacity: "100%" },
+      { scale: 1, opacity: "40%", duration: 0.5 }
+    );
+
+    tlCrewOut
+      .fromTo("h2", { y: 0, opacity: 1 }, { y: 50, opacity: 0, duration: 0.5 })
+      .fromTo(
+        "h1",
+        { y: 0, opacity: 1 },
+        { y: 50, opacity: 0, duration: 0.5 },
+        0.1
+      )
+      .fromTo(
+        "#description",
+        { y: 0, opacity: 1 },
+        { y: 50, opacity: 0, duration: 0.5 },
+        0.2
+      )
+      .fromTo("#img_crew", { opacity: 1 }, { opacity: 0, duration: 0.7 }, 0);
+  };
+
+  useEffect(() => setimg(dataCrew.images.png), [dataCrew]);
   return (
     <div className="flex flex-col justify-center items-center gap-10 p-10">
       <div className="text-white font-Bellefair font-normal text-[21px] flex justify-center flex-col items-center text-center gap-6 leading-8">
@@ -17,30 +84,48 @@ const CrewSelected = (id) => {
           <h2 className="opacity-50 uppercase">{dataCrew.role}</h2>
           <h1 className="text-[28px] uppercase">{dataCrew.name}</h1>
         </div>
-        <p className="text-[16px] font-Barlow text-[#D0D6F9]">{dataCrew.bio}</p>
+        <p id="description" className="text-[16px] font-Barlow text-[#D0D6F9]">
+          {dataCrew.bio}
+        </p>
       </div>
       <div>
         <ul className=" flex gap-5">
           {dataDic.map((crew) => (
-            <Link
+            <button
               key={crew.name}
-              to={`/crew/${crew.name.replace(" ", "_").toLowerCase()}`}
+              id={crew.name.toLowerCase().replace(" ", "_")}
+              onClick={() => {
+                setDisable(true);
+                animateOut();
+                setLastCrew(crew.name.toLowerCase().replace(" ", "_"));
+                setTimeout(() => {
+                  navigate(
+                    `/crew/${crew.name.toLowerCase().replace(" ", "_")}`
+                  );
+                  animateIn(crew.name.toLowerCase().replace(" ", "_"));
+                }, 700);
+                setTimeout(() => {
+                  setDisable(false);
+                }, 2000);
+              }}
+              disabled={id == crew.name.toLowerCase() ? true : disable}
             >
-              {crew.name.toLowerCase() == id.id.replace("_", " ") ? (
-                <li className="w-3 h-3 bg-white rounded-full"></li>
-              ) : (
-                <li className="w-3 h-3 bg-white/40 rounded-full hover:bg-white/70"></li>
-              )}
-            </Link>
+              <li
+                className={
+                  crew.name.toLowerCase() == id.replace("_", " ")
+                    ? "w-3 h-3 bg-white rounded-full"
+                    : "w-3 h-3 bg-white opacity-[40%] rounded-full hover:bg-white/70"
+                }
+              ></li>
+            </button>
           ))}
         </ul>
       </div>
       <div
+        id="img_crew"
         className="relative w-full h-[60vh] bg-contain bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${dataCrew.images.png})` }}
-      >
-        {/* <div className="absolute inset-0 bg-linear-to-t to-transparent"></div> */}
-      </div>
+      ></div>
     </div>
   );
 };
